@@ -1,0 +1,5 @@
+export enum PlantStatus {
+  OUT_OF_STOCK = 'OUT OF STOCK',
+  AVAILABLE = 'AVAILABLE',
+  NO_BUSINESS = 'NO BUSINESS',
+}
