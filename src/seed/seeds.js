@@ -17,7 +17,7 @@ plants.forEach((plant) => {
       importedDate: plant.importedDate,
     })
     .then((response) => {
-      console.log(response);
+      console.log(response.data);
     });
 });
 
