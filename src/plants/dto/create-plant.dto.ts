@@ -1,17 +1,14 @@
 import { Transform } from 'class-transformer';
 import {
-    IsAlphanumeric,
   IsEnum,
-  IsInt,
   IsNotEmpty,
   IsNumber,
-  IsNumberString,
   IsString,
   Length,
   Min,
-  min,
 } from 'class-validator';
 import { PlantStatus } from './plant-status.enum';
+import { PlantType } from './plant-type.enum';
 
 export class CreatePlantDto {
   @IsNotEmpty()
@@ -23,11 +20,20 @@ export class CreatePlantDto {
   @Min(0)
   price: number;
 
-  // update later
+  @IsNotEmpty()
+  @IsEnum(PlantType)
   category: string;
 
   @IsEnum(PlantStatus)
   status: PlantStatus;
   // update later
   description: string;
+
+  @IsNotEmpty()
+  imgPath: string;
+
+  @IsNotEmpty()
+  quantity: number;
+
+  importedDate: Date;
 }

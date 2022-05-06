@@ -1,5 +1,5 @@
 export enum PlantStatus {
-  OUT_OF_STOCK = 'OUT OF STOCK',
-  AVAILABLE = 'AVAILABLE',
-  NO_BUSINESS = 'NO BUSINESS',
+  OUT_OF_STOCK = 'Hết hàng',
+  AVAILABLE = 'Có sẵn',
+  NO_BUSINESS = 'Không kinh doanh',
 }

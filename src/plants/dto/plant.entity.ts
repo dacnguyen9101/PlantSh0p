@@ -15,4 +15,10 @@ export class Plant {
   status: PlantStatus;
   @Column()
   description: string;
+  @Column()
+  imgPath: string;
+  @Column()
+  quantity: number;
+  @Column()
+  importedDate: Date;
 }

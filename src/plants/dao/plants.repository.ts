@@ -11,13 +11,25 @@ export class PlantsRepository extends Repository<Plant> {
   }
 
   async createPlant(createPlantDto: CreatePlantDto): Promise<Plant> {
-    const { name, price, category, status, description } = createPlantDto;
+    const {
+      name,
+      price,
+      category,
+      status,
+      description,
+      imgPath,
+      quantity,
+      importedDate,
+    } = createPlantDto;
     const plant = this.create({
       name,
       price,
       category,
       status,
       description,
+      imgPath,
+      quantity,
+      importedDate,
     });
     await this.save(plant);
     return plant;
