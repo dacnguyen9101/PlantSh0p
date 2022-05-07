@@ -9,6 +9,7 @@ import {
   Post,
   ValidationPipe,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -57,7 +58,6 @@ export class PlantsController {
   /**
    UPDATE PLANT     
    */
-
   @ApiOkResponse({
     type: UpdatePlantDto,
     description: 'all req body is optional',
