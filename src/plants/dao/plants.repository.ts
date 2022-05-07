@@ -1,8 +1,11 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreatePlantDto } from '../dto/create-plant.dto';
+import { PlantStatus } from '../dto/plant-status.enum';
 import { Plant } from '../dto/plant.entity';
 import { UpdatePlantDto } from '../dto/update-plant.dto';
+
+const NOT_AFFECTED = 0;
 
 @EntityRepository(Plant)
 export class PlantsRepository extends Repository<Plant> {
@@ -11,25 +14,19 @@ export class PlantsRepository extends Repository<Plant> {
   }
 
   async createPlant(createPlantDto: CreatePlantDto): Promise<Plant> {
-    const {
-      name,
-      price,
-      category,
-      status,
-      description,
-      imgPath,
-      quantity,
-      importedDate,
-    } = createPlantDto;
+    const { name, price, category, quantity, imgPath, status, description } =
+      createPlantDto;
+
     const plant = this.create({
       name,
       price,
       category,
-      status,
-      description,
       imgPath,
       quantity,
-      importedDate,
+      status,
+      // opts
+      importedDate: createPlantDto.importedDate || new Date(),
+      description,
     });
     await this.save(plant);
     return plant;
@@ -44,29 +41,32 @@ export class PlantsRepository extends Repository<Plant> {
   }
 
   async updatePlant(id: string, updatePlantDto: UpdatePlantDto): Promise<void> {
-    const { name, price, category, status, description } = updatePlantDto;
-    const plant = await this.getPlant(id);
-    if (name) {
-      plant.name = name;
+    // const plant = await this.getPlant(id);
+
+    // Object.keys(updatePlantDto).map((key) => {
+    //   if (updatePlantDto[key]) {
+    //     plant[key] = updatePlantDto[key];
+    //   }
+    // });
+
+    // await this.save(plant);
+
+    const asArray = Object.entries(updatePlantDto);
+    const filtered = asArray.filter(
+      ([key, value]) => value !== null && value !== undefined,
+    );
+    const updatePlantFiltered = Object.fromEntries(filtered);
+
+    const result = await this.update(id, updatePlantFiltered);
+
+    if (result.affected === NOT_AFFECTED) {
+      throw new NotFoundException(`Not found a plant with id ${id}`);
     }
-    if (price) {
-      plant.price = price;
-    }
-    if (category) {
-      plant.category = category;
-    }
-    if (status) {
-      plant.status = status;
-    }
-    if (description) {
-      plant.description = description;
-    }
-    await this.save(plant);
   }
 
   async deletePlant(id: string): Promise<void> {
     const result = await this.delete(id);
-    if (result.affected === 0) {
+    if (result.affected === NOT_AFFECTED) {
       throw new NotFoundException(`Not found a plant with id ${id}`);
     }
   }

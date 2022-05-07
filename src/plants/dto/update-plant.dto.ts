@@ -1,40 +1,65 @@
-import { Transform } from 'class-transformer';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import {
-    IsAlphanumeric,
+  IsDateString,
   IsEnum,
   IsInt,
-  IsNotEmpty,
   IsNumber,
-  IsNumberString,
   IsOptional,
   IsString,
   Length,
   Min,
-  min,
 } from 'class-validator';
 import { PlantStatus } from './plant-status.enum';
+import { PlantType } from './plant-type.enum';
 
 export class UpdatePlantDto {
-  @IsNotEmpty()
+  @ApiPropertyOptional()
   @IsString()
   @Length(1, 50)
   @IsOptional()
   name: string;
 
+  @ApiPropertyOptional()
+  @IsEnum(PlantType)
+  @IsOptional()
+  category: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  imgPath: string;
+
+  @ApiPropertyOptional({
+    minimum: 0,
+  })
   @IsNumber()
   @Min(0)
   @IsOptional()
   price: number;
 
-  // update later
+  @ApiPropertyOptional({
+    minimum: 0,
+  })
+  @IsInt()
+  @Min(0)
   @IsOptional()
-  category: string;
+  quantity: number;
 
-  @IsNotEmpty()
+  @ApiPropertyOptional()
   @IsEnum(PlantStatus)
   @IsOptional()
   status: PlantStatus;
-  // update later
+
+  // OPTS
+  @ApiPropertyOptional()
+  @IsString()
   @IsOptional()
   description: string;
+
+  @ApiPropertyOptional({
+    default: 'Current date',
+  })
+  @IsDateString()
+  @IsOptional()
+  importedDate: Date;
 }

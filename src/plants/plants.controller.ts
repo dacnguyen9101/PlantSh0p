@@ -9,17 +9,25 @@ import {
   Post,
   ValidationPipe,
 } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreatePlantDto } from './dto/create-plant.dto';
 import { Plant } from './dto/plant.entity';
 import { UpdatePlantDto } from './dto/update-plant.dto';
 import { PlantsService } from './plants.service';
 
+@ApiTags('plants')
 @Controller('plants')
 export class PlantsController {
   constructor(private plantsService: PlantsService) {}
   /**
    GET ALL PLANTS OR FILTER      
    */
+  @ApiOkResponse({ type: Plant, isArray: true, description: 'get all plants' })
   @Get()
   getPLants(): Promise<Plant[]> {
     return this.plantsService.getPlants();
@@ -28,6 +36,8 @@ export class PlantsController {
   /**
    GET PLANT OR FILTER      
    */
+  @ApiOkResponse({ type: Plant })
+  @ApiQuery({ name: 'id' })
   @Get(':id')
   getPLant(@Param('id', ParseUUIDPipe) id: string): Promise<Plant> {
     return this.plantsService.getPlant(id);
@@ -36,6 +46,7 @@ export class PlantsController {
   /**
    CREATE PLANT     
    */
+  @ApiCreatedResponse({ type: CreatePlantDto })
   @Post()
   createPlant(
     @Body(ValidationPipe) createPlantDto: CreatePlantDto,
@@ -46,6 +57,11 @@ export class PlantsController {
   /**
    UPDATE PLANT     
    */
+
+  @ApiOkResponse({
+    type: UpdatePlantDto,
+    description: 'all req body is optional',
+  })
   @Patch(':id')
   updatePlant(
     @Param('id', ParseUUIDPipe) id: string,
