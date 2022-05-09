@@ -1,7 +1,6 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { CreatePlantDto } from '../dto/create-plant.dto';
-import { PlantStatus } from '../dto/plant-status.enum';
 import { Plant } from '../dto/plant.entity';
 import { UpdatePlantDto } from '../dto/update-plant.dto';
 

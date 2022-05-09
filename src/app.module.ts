@@ -7,6 +7,7 @@ import { configValidationSchema } from './config.schema';
 import { Plant } from './plants/dto/plant.entity';
 import { PlantsController } from './plants/plants.controller';
 import { PlantsModule } from './plants/plants.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -32,14 +33,9 @@ import { PlantsModule } from './plants/plants.module';
         };
       },
     }),
-    // TypeOrmModule.forRoot({
-    //   type: 'postgres',
-    //   autoLoadEntities: true,
-    //   synchronize: true,
-    //   entities: [Plant],
-    // }),
+    AuthModule,
   ],
-  controllers: [AppController, PlantsController],
+  controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {}
