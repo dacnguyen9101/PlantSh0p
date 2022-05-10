@@ -7,6 +7,7 @@ import {
   ParseUUIDPipe,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -16,12 +17,14 @@ import {
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { CreatePlantDto } from './dto/create-plant.dto';
 import { Plant } from './dto/plant.entity';
 import { UpdatePlantDto } from './dto/update-plant.dto';
 import { PlantsService } from './plants.service';
 
 @ApiTags('plants')
+// @UseGuards(JwtAuthGuard)
 @Controller('plants')
 export class PlantsController {
   constructor(private plantsService: PlantsService) {}

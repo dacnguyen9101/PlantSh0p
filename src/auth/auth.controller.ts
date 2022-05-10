@@ -2,10 +2,11 @@ import {
   Body,
   Controller,
   Post,
+  Req,
+  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { string } from 'joi';
 import { AuthService } from './auth.service';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 
@@ -23,7 +24,7 @@ export class AuthController {
   signIn(
     @Body('username') username: string,
     @Body('password') password: string,
-  ):Promise<any> {
-      return this.authService.validateUser(username, password)
+  ): Promise<any> {
+    return this.authService.validateUser(username, password);
   }
 }
