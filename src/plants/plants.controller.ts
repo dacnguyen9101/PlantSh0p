@@ -10,21 +10,20 @@ import {
   UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiQuery,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { AdminGuard } from 'src/auth/guard/admin.guard';
+import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { CreatePlantDto } from './dto/create-plant.dto';
 import { Plant } from './dto/plant.entity';
 import { UpdatePlantDto } from './dto/update-plant.dto';
 import { PlantsService } from './plants.service';
 
 @ApiTags('plants')
-// @UseGuards(JwtAuthGuard)
 @Controller('plants')
 export class PlantsController {
   constructor(private plantsService: PlantsService) {}
@@ -51,6 +50,7 @@ export class PlantsController {
    CREATE PLANT     
    */
   @ApiCreatedResponse({ type: CreatePlantDto })
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Post()
   createPlant(
     @Body(ValidationPipe) createPlantDto: CreatePlantDto,
@@ -65,6 +65,7 @@ export class PlantsController {
     type: UpdatePlantDto,
     description: 'all req body is optional',
   })
+  @UseGuards(JwtAuthGuard, AdminGuard)
   @Patch(':id')
   updatePlant(
     @Param('id', ParseUUIDPipe) id: string,
@@ -74,6 +75,7 @@ export class PlantsController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   deletePlant(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     return this.plantsService.deletePlant(id);
   }

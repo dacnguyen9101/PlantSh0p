@@ -2,7 +2,6 @@ import {
   Body,
   Controller,
   Post,
-  Req,
   UseGuards,
   UsePipes,
   ValidationPipe,
@@ -27,4 +26,10 @@ export class AuthController {
   ): Promise<any> {
     return this.authService.validateUser(username, password);
   }
+
+  // @UseGuards(JwtAuthGuard)
+  // @Post('test')
+  // test(@GetUser() user: User) {
+  //   return user
+  // }
 }

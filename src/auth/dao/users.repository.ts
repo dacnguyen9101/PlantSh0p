@@ -6,6 +6,7 @@ import { EntityRepository, Repository } from 'typeorm';
 import { AuthCredentialsDto } from '../dto/auth-credentials.dto';
 import { User } from '../dto/user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserRole } from '../dto/user-role.enum';
 enum UserError {
   DUPLICATE_USERNAME = 23505,
 }
@@ -26,6 +27,7 @@ export class UsersRepository extends Repository<User> {
     const user = this.create({
       username,
       password: hashedPassword,
+      role: UserRole.CUSTOMER
     });
     try {
       await this.save(user);
@@ -39,12 +41,4 @@ export class UsersRepository extends Repository<User> {
     }
   }
 
-  async validateUser(username: string, password: string):Promise<any> {
-    const user = await this.findOne({username})
-    if (user && await bcrypt.compare(password, user.password)) {
-      const {password, ...result} = user
-      return result
-    }
-    return null
-  }
 }
